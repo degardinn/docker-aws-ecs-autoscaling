@@ -40,9 +40,11 @@ This container also protects the **EC2 instance** on which it's running from ter
 
     docker run degardinn/aws-ecs-autoscaling
 
-This command should be run as a scheduled task, we recommend running it every 5 minutes or less.
+This command should be run as a scheduled task, we recommend running it every 5 minutes or less. It can be add as a *CRON* task by executing this command:
 
-See **EC2 instances User Data** to know how to add such a *CRON* task.
+    echo "*/5 * * * * docker run ndegardin/aws-ecs-autoscaling" | crontab -
+
+See **EC2 instances User Data** for the right place where to put this command.
 
 ## Notes
 
