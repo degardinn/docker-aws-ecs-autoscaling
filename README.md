@@ -2,7 +2,7 @@
 
 [`ndegardin/aws-ecs-autoscaling`](https://hub.docker.com/r/ndegardin/aws-ecs-autoscaling/)
 
-An container that provides an autoscaling mechanism for **ECS clusters**.
+An container that provides an autoscaling mechanism for **AWS ECS clusters**.
 
 The point is to always have room to run a container inside the **ECS cluster**, while keeping costs low and avoiding manual operations.
 
