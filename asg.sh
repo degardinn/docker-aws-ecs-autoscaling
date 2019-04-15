@@ -13,7 +13,7 @@ metricNameSpace="Custom/ECS"
 metricDimension="ClusterName"
 
 # Metrics
-maxContainerSize=$(aws ecs list-task-definitions --region $region | jq -r  '.taskDefinitionArns[]' | xargs -n 1 aws ecs describe-task-definition --region $region --task-definition  | jq '.taskDefinition.containerDefinitions[]|[.memory//0, .memoryReservation//0]|max'|sort -nr|head -n1)
+maxContainerSize=${MAX_CONTAINER_SIZE:-512}
 memoryAvailableForContainers=$(echo $instanceInfo|jq '.containerInstances[].remainingResources[] | select(.name == "MEMORY") | .integerValue')
 runningTasks=$(aws ecs describe-container-instances --cluster $clusterName --container-instances $instanceArn --region $region | jq '.containerInstances[].runningTasksCount')
 containerSlotsAvailable=$(($memoryAvailableForContainers / $maxContainerSize))
