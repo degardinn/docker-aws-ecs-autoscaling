@@ -1,4 +1,4 @@
-# EFS Borg Backup Docker image
+# AWS ECS autoscaling image
 
 [`ndegardin/aws-ecs-autoscaling`](https://hub.docker.com/r/ndegardin/aws-ecs-autoscaling/)
 
@@ -28,19 +28,20 @@ This container also protects its **EC2 instance** from being removed by the **au
 ## Features
 
 When run, this container sends the following metrics describing the **EC2 instance** on which it's running to **Cloudwatch**:
- - `Custom/ECS - MaxContainerSize`: the biggest hard/soft memory limit from all the container definitions of this **ECS cluster**
- - `Custom/ECS - RunningTaskCount`: the number of containers running on this instance
- - `Custom/ECS - MemoryAvailable`: the available memory to run containers
- - `Custom/ECS - ContainerSlots`: the number of containers the size of `MaxContainerSize` that could run on this instance (according to `MemoryAvailable`) 
- - `Custom/ECS - EmptyInstance`: 0 if a container is running, 1 if no container is running
- 
+
+- `Custom/ECS - MaxContainerSize`: the biggest hard/soft memory limit from all the container definitions of this **ECS cluster**
+- `Custom/ECS - RunningTaskCount`: the number of containers running on this instance
+- `Custom/ECS - MemoryAvailable`: the available memory to run containers
+- `Custom/ECS - ContainerSlots`: the number of containers the size of `MaxContainerSize` that could run on this instance (according to `MemoryAvailable`)
+- `Custom/ECS - EmptyInstance`: 0 if a container is running, 1 if no container is running
+
 This container also protects the **EC2 instance** on which it's running from termination if `EmptyInstance` is equal to 0, and removes this protection if `EmptyInstance` is equal to 1.
 
 ## Usage
 
     docker run degardinn/aws-ecs-autoscaling
 
-This command should be run as a scheduled task, we recommend running it every 5 minutes or less. It can be add as a *CRON* task by executing this command:
+This command should be run as a scheduled task, we recommend running it every 5 minutes or less. It can be add as a _CRON_ task by executing this command:
 
     echo "*/5 * * * * docker run ndegardin/aws-ecs-autoscaling" | crontab -
 
@@ -68,11 +69,11 @@ It is recommended to watch the metrics and to adjust the values of the **Cloudwa
 
 A **Cloudwatch dashboard** could help figuring out what happens on the **ECS cluster**.
 
-We recommend creating at least 
+We recommend creating at least
 
- - a **line graph** with:
-     - `Custom/ECS - RunningTasksCount`: sum, on the left Y axis 
-     - `Custom/ECS - ContainerSlots`: sum, on the left Y axis 
-     - `Custom/ECS - EmptyInstance`: sum, on the right Y axis 
-     - `AWS/Autoscaling - GroupInServiceInstances`: maximum, on the right Y axis
- - a **number graph**, with `Custom/ECS - MaxContainerSize`: maximum
+- a **line graph** with:
+  - `Custom/ECS - RunningTasksCount`: sum, on the left Y axis
+  - `Custom/ECS - ContainerSlots`: sum, on the left Y axis
+  - `Custom/ECS - EmptyInstance`: sum, on the right Y axis
+  - `AWS/Autoscaling - GroupInServiceInstances`: maximum, on the right Y axis
+- a **number graph**, with `Custom/ECS - MaxContainerSize`: maximum
